@@ -1,9 +1,12 @@
+import Card from "./card";
+
 function App() {
   return (
-    <main className="app">
-      <h1>Hello, React + TypeScript</h1>
-      <p>Lesson 1 is ready to build.</p>
-    </main>
+    <Card title="User Setting">
+      <p>Modify your account prefrence</p>
+      <input type="text" placeholder="Change username"/>
+      <button>Submit</button>
+    </Card>
   );
 }
 
