@@ -1,0 +1,33 @@
+<div id="chat-bubble" >
+
+</div>
+<script>
+    async function listenToAiStream(){
+        const response = await fetch(
+  "http://localhost:9000/api/chat/stream"
+);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        const outputDiv = document.getElementById('chat-bubble');
+
+        while(true){
+            const {value, done} = await reader.read();
+            if(done) break;
+
+            const chunk = decoder.decode(value);
+
+            const lines  = chunk.split('\n');
+            for(const line of lines){
+                const jsonStr = line.replace('data: ','');
+                try{
+                    const data = JSON.parse(jsonStr)
+                    outputDiv.innerHTML += data.text;
+                }
+                catch(e){
+
+                }
+            }
+        }
+    }
+    listenToAiStream()
+</script>

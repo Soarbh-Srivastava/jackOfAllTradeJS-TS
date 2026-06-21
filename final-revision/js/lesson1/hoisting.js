@@ -6,7 +6,7 @@ console.log(x+=x);
 var x;
 
 // tzd (temporal dead zone)
-// this period in js between entering a scop and the intialization of the variable declare 
+// this period in js between entering a scope and the intialization of the variable declare 
 // with let and const, during which accessing them cause the reference error;
 
 // y = 1;

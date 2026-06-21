@@ -13,7 +13,7 @@ const pencil = {
 console.log(pencil.type);
 console.log(pencil.color)
 
-// we can chage the property of object outside
+// we can change the property of object outside
 pencil.type = "hb2"
 
 console.log(`I use a ${pencil.type} of ${pencil.brand}`)

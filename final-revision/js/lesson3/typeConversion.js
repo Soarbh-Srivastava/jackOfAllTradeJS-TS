@@ -1,6 +1,5 @@
 // Type conversion can be implicit if result from a expression as it happen automatically
-const a = 10
-;
+const a = 10;
 console.log("variable f contain the value "+a) // result is a string
 
 // if a value fail to convert into number it is NAN
