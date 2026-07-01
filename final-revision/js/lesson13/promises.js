@@ -108,6 +108,4 @@ let myProm = new Promise(function(res,rej){
         res("I Love u")
     },3000)
 })
-myProm.then(function(value){
-    document.getElementById("demo").innerHTML = value
-})
+myProm.then(mess => console.log(mess))

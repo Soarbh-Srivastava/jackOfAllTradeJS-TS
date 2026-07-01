@@ -21,7 +21,6 @@ export default function App(){
         userName='soarbh'
         isAdmin = {true}
         status='active'
-        onStatusToggle={}
         />
         </>
     )

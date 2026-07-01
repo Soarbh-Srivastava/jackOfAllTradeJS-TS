@@ -1,10 +1,7 @@
-function App() {
-  return (
-    <main className="app">
-      <h1>Hello, React + TypeScript</h1>
-      <p>Lesson 1 is ready to build.</p>
-    </main>
-  );
+export default function App(){
+	return(
+		<div>
+			<p className="text-white">Coin tracker</p>
+		</div>
+	)
 }
-
-export default App;

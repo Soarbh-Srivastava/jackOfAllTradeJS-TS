@@ -55,3 +55,4 @@ console.log(someNum.indexOf("4"))
 
 // endWith() and startWith() return true or false 
 // based on string start or end with given 
+console.log(wordArray.join())
