@@ -1,0 +1,7 @@
+export const metadata={
+title:"learn nextjs"
+}
+
+export default function Home(){
+    return <h1>home</h1>
+}
