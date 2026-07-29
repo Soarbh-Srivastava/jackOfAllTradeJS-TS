@@ -46,3 +46,36 @@ function impureAdd(amount) {
 function pureAdd(a, b) {
   return a + b;
 }
+
+function* basicGenrator() {
+  console.log("First step");
+  yield "First step completed";
+  console.log("Second step");
+  yield "Second step completed";
+  console.log("Third step");
+  yield "Finsied";
+}
+const gen = basicGenrator();
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+
+// async function
+// async function fetchUser() {
+//   const res = await fetch(
+//     "https://api.example.com/user](https://api.example.com/user",
+//   );
+//   const data = await res.json();
+//   console.log(data);
+// }
+// fetchUser();
+
+function Player(name, level) {
+  this.name = name;
+  this.level = level;
+}
+let p2 = Player("soarbh", 1);
+let p1 = new Player("soarbh", 1);
+
+console.log(p1.name);
+console.log(p2.name); //TypeError: Cannot read properties of undefined (reading 'name')
