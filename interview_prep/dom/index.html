@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Testing: Live vs Static & Reflow Performance</title>
+  </head>
+  <body>
+    <!-- Moved elements out of head and into the valid body tag -->
+    <li class="item">1</li>
+    <li class="item">2</li>
+    <li class="item">3</li>
+
+    <div id="my-list"></div>
+
+    <script>
+      // FIXED: Removed the leading dot from getElementsByClassName
+      const liveList = document.getElementsByClassName("item");
+      const staticList = document.querySelectorAll(".item");
+
+      console.log(liveList.length); // 3
+      console.log(staticList.length); // 3
+
+      const newItem = document.createElement("li");
+      newItem.className = "item";
+      newItem.textContent = "4";
+      document.body.appendChild(newItem);
+
+      console.log(liveList.length); // 4
+      console.log(staticList.length); // 3
+
+      const listContainer = document.getElementById("my-list");
+
+      // ❌ BAD: Triggers 100 screen repaints!
+      // for (let i = 0; i < 100; i++) {
+      //   const li = document.createElement("li");
+      //   li.textContent = `Item ${i}`;
+      //   listContainer.appendChild(li);
+      // }
+
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < 100; i++) {
+        const li = document.createElement("li");
+        li.textContent = `Item ${i}`;
+        fragment.appendChild(li); // Appending to invisible memory
+      }
+      listContainer.appendChild(fragment);
+    </script>
+  </body>
+</html>
