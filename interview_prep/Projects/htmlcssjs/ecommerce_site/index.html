@@ -67,9 +67,10 @@
     <!-- side bar of for the filter tab -->
     <div id="main-container">
       <div id="filter">
-        <p class="heading-text">
-          <span>filter</span><img src="" alt="filter-icon" />
-        </p>
+        <div class="text-icon">
+          <span class="heading-text">Filter</span>
+          <i class="fa fa-filter" style="color: #a1a1a1"></i>
+        </div>
         <hr />
         <div id="filter-category-container">
           <span><p>T-shirt</p></span>
@@ -77,9 +78,45 @@
           <span><p>T-shirt</p></span>
         </div>
         <hr />
-        <span class="heading-text">price range</span
-        ><img src="" alt="filter-icon" />
-        <div>slider</div>
+        <div class="price-filter-wrapper">
+          <div class="text-icon">
+            <span class="heading-text">Price</span>
+          </div>
+
+          <!-- Numbers display box -->
+          <div class="price-input-container">
+            <div class="field">
+              <span>Min</span>
+              <span class="price-display">$<span id="min-val">100</span></span>
+            </div>
+            <div class="field">
+              <span>Max</span>
+              <span class="price-display">$<span id="max-val">400</span></span>
+            </div>
+          </div>
+
+          <!-- The overlapping sliders -->
+          <div class="slider-container">
+            <div class="slider-track"></div>
+            <input
+              type="range"
+              class="range-min"
+              min="0"
+              max="500"
+              value="100"
+              step="10"
+            />
+            <input
+              type="range"
+              class="range-max"
+              min="0"
+              max="500"
+              value="400"
+              step="10"
+            />
+          </div>
+        </div>
+
         <hr />
         <button>Apply filter</button>
       </div>
