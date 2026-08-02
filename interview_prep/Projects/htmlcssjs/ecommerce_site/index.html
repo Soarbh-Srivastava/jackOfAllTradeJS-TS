@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,26 +11,23 @@
       href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Lilita+One&display=swap"
       rel="stylesheet"
     />
-
     <!-- Font Awesome 4.7 CDN -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
     <link rel="stylesheet" href="../ecommerce_site/index.css" />
   </head>
   <body>
     <!-- brand logo and navigation, add to cart -->
     <nav class="navbar">
-      <!-- 1. Logo  -->
+      <!-- 1. Logo -->
       <div class="logo-container">
         <button class="menu-toggle">
           <i class="fa fa-bars"></i>
         </button>
         <div class="logo">SHOP.CO</div>
       </div>
-
       <!-- 2. Nav Items -->
       <ul class="nav-links">
         <li><a href="#">Shop</a></li>
@@ -39,7 +35,6 @@
         <li><a href="#">New Arrival</a></li>
         <li><a href="#">Brand</a></li>
       </ul>
-
       <!-- 3. Search Bar -->
       <div class="search-box">
         <span class="search-inp-container">
@@ -47,7 +42,6 @@
           <input type="text" placeholder="Search..." />
         </span>
       </div>
-
       <!-- 4. Icons -->
       <div class="nav-icons">
         <i class="fa fa-shopping-bag"></i>
@@ -64,12 +58,25 @@
       </ul>
     </nav>
 
+    <!-- Mobile Floating Filter Trigger Button -->
+    <button id="mobile-filter-trigger" class="mobile-only-btn">
+      <i class="fa fa-filter"></i> Filters
+    </button>
+
     <!-- side bar of for the filter tab -->
     <div id="main-container">
       <div id="filter">
         <div class="text-icon">
           <span class="heading-text">Filter</span>
-          <i class="fa fa-filter" style="color: #a1a1a1"></i>
+          <!-- Toggled icons for desktop and mobile states -->
+          <i
+            class="fa fa-filter desktop-filter-icon"
+            style="color: #a1a1a1"
+          ></i>
+          <i
+            class="fa fa-times mobile-filter-close"
+            style="display: none; cursor: pointer"
+          ></i>
         </div>
         <hr />
         <div id="filter-category-container">
@@ -82,7 +89,6 @@
           <div class="text-icon">
             <span class="heading-text">Price</span>
           </div>
-
           <!-- Numbers display box -->
           <div class="price-input-container">
             <div class="field">
@@ -94,7 +100,6 @@
               <span class="price-display">$<span id="max-val">400</span></span>
             </div>
           </div>
-
           <!-- The overlapping sliders -->
           <div class="slider-container">
             <div class="slider-track"></div>
@@ -116,24 +121,29 @@
             />
           </div>
         </div>
-
         <hr />
-        <button>Apply filter</button>
+        <button class="filter-btn">Apply filter</button>
       </div>
 
       <!-- product listing -->
+      <!-- product listing container -->
       <div id="category-page">
         <div id="heading-text">
-          <h4>Category-name</h4>
+          <h4 id="category-title">Category Name</h4>
         </div>
 
-        <!-- product card -->
-        <div class="product-card">
-          <div class="product-img-container">
-            <img src="" alt="product-img" class="product-img" />
+        <!-- JavaScript injects dynamic nodes directly here -->
+        <div class="products-grid" id="products-container">
+          <!-- Template Card Blueprint -->
+          <div class="product-card">
+            <div class="product-img-container">
+              <img src="" alt="product-img" class="product-img" />
+            </div>
+            <div class="product-info">
+              <p class="product-name">Product Name Placeholder</p>
+              <p class="product-price">$0.00</p>
+            </div>
           </div>
-          <p class="product-name">Product name</p>
-          <p class="product-price">000.00</p>
         </div>
       </div>
     </div>
