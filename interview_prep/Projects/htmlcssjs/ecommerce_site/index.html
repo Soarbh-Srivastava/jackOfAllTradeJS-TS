@@ -64,65 +64,71 @@
 
     <!-- side bar of for the filter tab -->
     <div id="main-container">
-      <div id="filter">
-        <div class="text-icon">
-          <span class="heading-text">Filter</span>
-          <!-- Toggled icons for desktop and mobile states -->
-          <i
-            class="fa fa-filter desktop-filter-icon"
-            style="color: #a1a1a1"
-          ></i>
-          <i
-            class="fa fa-times mobile-filter-close"
-            style="display: none; cursor: pointer"
-          ></i>
-        </div>
-        <hr />
-        <div id="filter-category-container">
-          <span><p>T-shirt</p></span>
-          <span><p>T-shirt</p></span>
-          <span><p>T-shirt</p></span>
-        </div>
-        <hr />
-        <div class="price-filter-wrapper">
+      <form action="/submit">
+        <div id="filter">
           <div class="text-icon">
-            <span class="heading-text">Price</span>
+            <span class="heading-text">Filter</span>
+            <!-- Toggled icons for desktop and mobile states -->
+            <i
+              class="fa fa-filter desktop-filter-icon"
+              style="color: #a1a1a1"
+            ></i>
+            <i
+              class="fa fa-times mobile-filter-close"
+              style="display: none; cursor: pointer"
+            ></i>
           </div>
-          <!-- Numbers display box -->
-          <div class="price-input-container">
-            <div class="field">
-              <span>Min</span>
-              <span class="price-display">$<span id="min-val">100</span></span>
+          <hr />
+          <div id="filter-category-container">
+            <span><button>T-shirt</button></span>
+            <span><button>T-shirt</button></span>
+            <span><button>T-shirt</button></span>
+          </div>
+          <hr />
+          <div class="price-filter-wrapper">
+            <div class="text-icon">
+              <span class="heading-text">Price</span>
             </div>
-            <div class="field">
-              <span>Max</span>
-              <span class="price-display">$<span id="max-val">400</span></span>
+            <!-- Numbers display box -->
+            <div class="price-input-container">
+              <div class="field">
+                <span>Min</span>
+                <span class="price-display"
+                  >$<span id="min-val">100</span></span
+                >
+              </div>
+              <div class="field">
+                <span>Max</span>
+                <span class="price-display"
+                  >$<span id="max-val">400</span></span
+                >
+              </div>
+            </div>
+            <!-- The overlapping sliders -->
+            <div class="slider-container">
+              <div class="slider-track"></div>
+              <input
+                type="range"
+                class="range-min"
+                min="0"
+                max="500"
+                value="100"
+                step="10"
+              />
+              <input
+                type="range"
+                class="range-max"
+                min="0"
+                max="500"
+                value="400"
+                step="10"
+              />
             </div>
           </div>
-          <!-- The overlapping sliders -->
-          <div class="slider-container">
-            <div class="slider-track"></div>
-            <input
-              type="range"
-              class="range-min"
-              min="0"
-              max="500"
-              value="100"
-              step="10"
-            />
-            <input
-              type="range"
-              class="range-max"
-              min="0"
-              max="500"
-              value="400"
-              step="10"
-            />
-          </div>
+          <hr />
+          <button class="filter-btn" type="submit">Apply filter</button>
         </div>
-        <hr />
-        <button class="filter-btn">Apply filter</button>
-      </div>
+      </form>
 
       <!-- product listing -->
       <!-- product listing container -->
