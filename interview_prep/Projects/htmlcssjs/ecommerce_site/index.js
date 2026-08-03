@@ -67,19 +67,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyFilterBtn = document.querySelector(".filter-btn");
 
   if (filterPanel && mobileTrigger) {
-    // Open action
+    remov;
     mobileTrigger.addEventListener("click", () => {
       filterPanel.classList.add("open");
     });
 
-    // Close action via 'X' element click event
     if (mobileClose) {
       mobileClose.addEventListener("click", () => {
         filterPanel.classList.remove("open");
       });
     }
 
-    // Close action automatically on form evaluation completion
     if (applyFilterBtn) {
       applyFilterBtn.addEventListener("click", () => {
         filterPanel.classList.remove("open");
@@ -91,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================================================
 // product api
 // ==========================================================================
-// Use the correct ID selector matching your HTML
+
 const productContainer = document.getElementById("products-container");
 
 fetch("https://api.escuelajs.co/api/v1/products")
@@ -100,18 +98,14 @@ fetch("https://api.escuelajs.co/api/v1/products")
     return response.json();
   })
   .then((products) => {
-    // Clear out placeholder template cards before rendering
     if (productContainer) productContainer.innerHTML = "";
 
-    // Create the fragment in memory
     const fragment = document.createDocumentFragment();
 
-    // Loop through the actual array returned by the API
     products.forEach((product) => {
       const card = document.createElement("div");
       card.className = "product-card";
 
-      // Use your exact HTML template layout structure
       card.innerHTML = `
         <div class="product-img-container">
           <img src="${product.images[0] || "https://placeholder.com"}" alt="${product.title}" class="product-img" />
@@ -125,7 +119,6 @@ fetch("https://api.escuelajs.co/api/v1/products")
       fragment.appendChild(card);
     });
 
-    // Append to live DOM exactly once at the end
     if (productContainer) {
       productContainer.appendChild(fragment);
     }
