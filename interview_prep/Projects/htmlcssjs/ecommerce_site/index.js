@@ -392,6 +392,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setStoredData("wishlist", wishlist);
+        if (wishlistContainer && wishlistContainer.classList.contains("open")) {
+          renderWishlist();
+        }
       }
 
       if (e.target.classList.contains("addtocart")) {
@@ -414,6 +417,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setStoredData("cart", cart);
+        if (cartContainer && cartContainer.classList.contains("open")) {
+          renderCart();
+        }
       }
     });
   }

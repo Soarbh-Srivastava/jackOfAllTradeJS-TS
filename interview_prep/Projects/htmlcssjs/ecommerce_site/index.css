@@ -411,6 +411,7 @@ hr {
   font-family: inherit;
   font-size: 0.95rem;
   line-height: 1;
+  text-decoration: none;
 }
 
 .qty-controls span {
