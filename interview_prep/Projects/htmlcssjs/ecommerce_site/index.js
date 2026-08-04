@@ -1,27 +1,97 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
-  // MOBILE NAVIGATION BAR TOGGLE
+  // DOM ELEMENTS & GLOBAL STATE
   // ==========================================================================
   const menuToggle = document.querySelector(".menu-toggle");
   const navLinks = document.querySelector(".nav-links");
 
-  if (menuToggle && navLinks) {
-    menuToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
-    });
-  }
-
-  // ==========================================================================
-  // DUAL RANGE PRICE SLIDER WORKFLOW
-  // ==========================================================================
   const minInput = document.querySelector(".range-min");
   const maxInput = document.querySelector(".range-max");
   const track = document.querySelector(".slider-track");
   const minValText = document.getElementById("min-val");
   const maxValText = document.getElementById("max-val");
 
-  const priceGap = 10;
+  const filterPanel = document.getElementById("filter");
+  const mobileTrigger = document.getElementById("mobile-filter-trigger");
+  const mobileClose = document.querySelector(".mobile-filter-close");
 
+  const productContainer = document.getElementById("products-container");
+  const filterCnt = document.querySelector("#filter-category-container");
+  const categoryTitle = document.getElementById("category-title");
+  const filterForm = document.querySelector("form");
+  const searchInput = document.querySelector(".search-box input");
+
+  const cartBtn = document.querySelector(".cart-btn");
+  const cartContainer = document.querySelector(".cart-container");
+  const cartCloseBtn = document.querySelector(".close-cart-btn");
+
+  const wistlistBtn = document.querySelector(".wishtlist-btn");
+  const wishlistContainer = document.querySelector(".wishlist-container");
+  const wishlistCloseBtn = document.querySelector(".close-wishlist-btn");
+
+  const priceGap = 10;
+  let searchTimeout = null;
+
+  const state = {
+    categoryId: null,
+    title: "",
+    priceMin: 0,
+    priceMax: 500,
+  };
+
+  // ==========================================================================
+  // STORAGE HELPERS
+  // ==========================================================================
+  const getStoredData = (key) => JSON.parse(localStorage.getItem(key)) || [];
+  const setStoredData = (key, data) =>
+    localStorage.setItem(key, JSON.stringify(data));
+
+  // ==========================================================================
+  // MOBILE NAVIGATION & FILTER TOGGLES
+  // ==========================================================================
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () =>
+      navLinks.classList.toggle("active"),
+    );
+  }
+
+  if (filterPanel && mobileTrigger) {
+    mobileTrigger.addEventListener("click", () =>
+      filterPanel.classList.add("open"),
+    );
+    if (mobileClose) {
+      mobileClose.addEventListener("click", () =>
+        filterPanel.classList.remove("open"),
+      );
+    }
+  }
+
+  if (cartBtn && cartContainer) {
+    cartBtn.addEventListener("click", () =>
+      cartContainer.classList.add("open"),
+    );
+  }
+
+  if (cartCloseBtn && cartContainer) {
+    cartCloseBtn.addEventListener("click", () =>
+      cartContainer.classList.remove("open"),
+    );
+  }
+
+  if (wistlistBtn && wishlistContainer) {
+    wistlistBtn.addEventListener("click", () => {
+      wishlistContainer.classList.add("open");
+    });
+  }
+  if (wishlistCloseBtn && wishlistContainer) {
+    wishlistCloseBtn.addEventListener("click", () =>
+      cartContainer.classList.remove("open"),
+    );
+  }
+
+  // ==========================================================================
+  // DUAL RANGE PRICE SLIDER
+  // ==========================================================================
   function updateTrack(e) {
     if (!minInput || !maxInput) return;
 
@@ -38,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         max = min + priceGap;
       }
     }
+
     if (minValText) minValText.textContent = min;
     if (maxValText) maxValText.textContent = max;
 
@@ -54,47 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
       minInput.addEventListener(event, updateTrack);
       maxInput.addEventListener(event, updateTrack);
     });
-
     updateTrack();
   }
 
   // ==========================================================================
-  // MOBILE SLIDE-UP BOTTOM SHEET FILTER TOGGLE
+  // API INTEGRATION & PRODUCT RENDERING
   // ==========================================================================
-  const filterPanel = document.getElementById("filter");
-  const mobileTrigger = document.getElementById("mobile-filter-trigger");
-  const mobileClose = document.querySelector(".mobile-filter-close");
-
-  if (filterPanel && mobileTrigger) {
-    mobileTrigger.addEventListener("click", () => {
-      filterPanel.classList.add("open");
-    });
-
-    if (mobileClose) {
-      mobileClose.addEventListener("click", () => {
-        filterPanel.classList.remove("open");
-      });
-    }
-  }
-
-  // ==========================================================================
-  // DYNAMIC PRODUCT FILTERING & API INTEGRATION
-  // ==========================================================================
-  const productContainer = document.getElementById("products-container");
-  const filterCnt = document.querySelector("#filter-category-container");
-  const categoryTitle = document.getElementById("category-title");
-  const filterForm = document.querySelector("form");
-  const searchInput = document.querySelector(".search-box input");
-
-  // Track active filter state
-  const state = {
-    categoryId: null,
-    title: "",
-    priceMin: 0,
-    priceMax: 500,
-  };
-
-  // Fetch products with active filters
   function fetchProducts() {
     if (productContainer) {
       productContainer.innerHTML = "<p>Loading products...</p>";
@@ -102,27 +138,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const url = new URL("https://api.escuelajs.co/api/v1/products");
 
-    if (state.title.trim() !== "") {
+    if (state.title.trim())
       url.searchParams.append("title", state.title.trim());
-    }
-    if (state.categoryId) {
+    if (state.categoryId)
       url.searchParams.append("categoryId", state.categoryId);
-    }
-    if (state.priceMin !== undefined) {
+    if (state.priceMin !== undefined)
       url.searchParams.append("price_min", state.priceMin);
-    }
-    if (state.priceMax !== undefined) {
+    if (state.priceMax !== undefined)
       url.searchParams.append("price_max", state.priceMax);
-    }
 
     fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error("Can't fetch products");
         return res.json();
       })
-      .then((products) => {
-        renderProducts(products);
-      })
+      .then((products) => renderProducts(products))
       .catch((err) => {
         console.error("Error loading products:", err);
         if (productContainer) {
@@ -131,7 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Render product cards to DOM
   function renderProducts(products) {
     if (!productContainer) return;
     productContainer.innerHTML = "";
@@ -141,16 +170,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const wishlist = getStoredData("wishlist");
     const fragment = document.createDocumentFragment();
 
     products.forEach((product) => {
       const card = document.createElement("div");
       card.className = "product-card";
 
-      // Fallback image cleanup
       const imgUrl = product.images?.[0]
         ? product.images[0].replace(/[\[\]"]/g, "")
         : "";
+
+      const isWishlisted = wishlist.some(
+        (item) => String(item.id) === String(product.id),
+      );
+      const heartClass = isWishlisted ? "fa-heart" : "fa-heart-o";
 
       card.innerHTML = `
         <div class="product-img-container">
@@ -160,6 +194,20 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="product-name">${product.title}</p>
           <p class="product-price">$${product.price}</p>
         </div>
+        <div class="prdt-action">
+          <i class="fa ${heartClass} wishlist" 
+             data-id="${product.id}" 
+             data-title="${product.title}" 
+             data-price="${product.price}" 
+             data-img="${imgUrl}" 
+             aria-hidden="true"></i>
+          <i class="fa fa-plus addtocart" 
+             data-id="${product.id}" 
+             data-title="${product.title}" 
+             data-price="${product.price}" 
+             data-img="${imgUrl}" 
+             aria-hidden="true"></i>
+        </div>
       `;
 
       fragment.appendChild(card);
@@ -168,14 +216,15 @@ document.addEventListener("DOMContentLoaded", () => {
     productContainer.appendChild(fragment);
   }
 
-  // Fetch dynamic categories
+  // Fetch initial Categories
   fetch("https://api.escuelajs.co/api/v1/categories")
     .then((res) => {
       if (!res.ok) throw new Error("Can't fetch categories");
       return res.json();
     })
     .then((categories) => {
-      if (filterCnt) filterCnt.innerHTML = "";
+      if (!filterCnt) return;
+      filterCnt.innerHTML = "";
       const fragment = document.createDocumentFragment();
 
       categories.slice(0, 5).forEach((cat) => {
@@ -195,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
           if (categoryTitle) categoryTitle.textContent = cat.name;
 
           fetchProducts();
-
           if (filterPanel) filterPanel.classList.remove("open");
         });
 
@@ -208,24 +256,21 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((err) => console.error("Error loading categories:", err));
 
-  // Handle Form Submission (Price Filter & Apply Button)
+  // ==========================================================================
+  // EVENT LISTENERS & DELEGATION
+  // ==========================================================================
   if (filterForm) {
     filterForm.addEventListener("submit", (e) => {
       e.preventDefault();
-
       if (minInput && maxInput) {
         state.priceMin = parseInt(minInput.value);
         state.priceMax = parseInt(maxInput.value);
       }
-
       fetchProducts();
-
       if (filterPanel) filterPanel.classList.remove("open");
     });
   }
 
-  // Handle Search Input (Debounced)
-  let searchTimeout;
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       clearTimeout(searchTimeout);
@@ -236,6 +281,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial load
+  if (productContainer) {
+    productContainer.addEventListener("click", (e) => {
+      // WISHLIST TOGGLE
+      if (e.target.classList.contains("wishlist")) {
+        const productId = e.target.dataset.id;
+        let wishlist = getStoredData("wishlist");
+        const existingIndex = wishlist.findIndex(
+          (item) => String(item.id) === String(productId),
+        );
+
+        if (existingIndex > -1) {
+          wishlist.splice(existingIndex, 1);
+          e.target.classList.remove("fa-heart");
+          e.target.classList.add("fa-heart-o");
+        } else {
+          wishlist.push({
+            id: productId,
+            title: e.target.dataset.title,
+            price: e.target.dataset.price,
+            img: e.target.dataset.img,
+          });
+          e.target.classList.remove("fa-heart-o");
+          e.target.classList.add("fa-heart");
+        }
+
+        setStoredData("wishlist", wishlist);
+      }
+
+      // ADD TO CART
+      if (e.target.classList.contains("addtocart")) {
+        const cart = getStoredData("cart");
+        const newItem = {
+          id: e.target.dataset.id,
+          title: e.target.dataset.title,
+          price: e.target.dataset.price,
+          img: e.target.dataset.img,
+          quantity: 1,
+        };
+
+        cart.push(newItem);
+        setStoredData("cart", cart);
+      }
+    });
+  }
+
+  // Initial products load
   fetchProducts();
 });
