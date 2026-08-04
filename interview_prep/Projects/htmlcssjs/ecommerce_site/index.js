@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartContainer = document.querySelector(".cart-container");
   const cartCloseBtn = document.querySelector(".close-cart-btn");
 
-  const wistlistBtn = document.querySelector(".wishtlist-btn");
+  const wishlistBtn = document.querySelector(".wishlist-btn");
   const wishlistContainer = document.querySelector(".wishlist-container");
   const wishlistCloseBtn = document.querySelector(".close-wishlist-btn");
 
@@ -40,14 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ==========================================================================
-  // STORAGE HELPERS
+  // LOCALSTORAGE HELPERS
   // ==========================================================================
   const getStoredData = (key) => JSON.parse(localStorage.getItem(key)) || [];
   const setStoredData = (key, data) =>
     localStorage.setItem(key, JSON.stringify(data));
 
   // ==========================================================================
-  // MOBILE NAVIGATION & FILTER TOGGLES
+  // UI TOGGLES (NAV, FILTERS, CART, WISHLIST)
   // ==========================================================================
   if (menuToggle && navLinks) {
     menuToggle.addEventListener("click", () =>
@@ -67,9 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (cartBtn && cartContainer) {
-    cartBtn.addEventListener("click", () =>
-      cartContainer.classList.add("open"),
-    );
+    cartBtn.addEventListener("click", () => {
+      renderCart();
+      cartContainer.classList.add("open");
+    });
   }
 
   if (cartCloseBtn && cartContainer) {
@@ -78,14 +79,16 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  if (wistlistBtn && wishlistContainer) {
-    wistlistBtn.addEventListener("click", () => {
+  if (wishlistBtn && wishlistContainer) {
+    wishlistBtn.addEventListener("click", () => {
+      renderWishlist();
       wishlistContainer.classList.add("open");
     });
   }
+
   if (wishlistCloseBtn && wishlistContainer) {
     wishlistCloseBtn.addEventListener("click", () =>
-      cartContainer.classList.remove("open"),
+      wishlistContainer.classList.remove("open"),
     );
   }
 
@@ -129,7 +132,80 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // API INTEGRATION & PRODUCT RENDERING
+  // DYNAMIC RENDER FUNCTIONS (CART & WISHLIST)
+  // ==========================================================================
+  function renderCart() {
+    let cartBody = cartContainer.querySelector(".cart-body");
+    if (!cartBody) {
+      cartBody = document.createElement("div");
+      cartBody.className = "cart-body";
+      cartContainer.appendChild(cartBody);
+    }
+
+    const cart = getStoredData("cart");
+    if (cart.length === 0) {
+      cartBody.innerHTML = `<p class="empty-msg">Your cart is empty.</p>`;
+      return;
+    }
+
+    let total = 0;
+    cartBody.innerHTML = cart
+      .map((item) => {
+        const itemTotal = Number(item.price) * item.quantity;
+        total += itemTotal;
+        return `
+        <div class="cart-card" data-id="${item.id}">
+          <img src="${item.img || "https://placehold.co/80x80"}" alt="${item.title}" />
+          <div class="cart-data">
+            <p class="cart-item-title">${item.title}</p>
+            <p class="cart-item-price">$${item.price} x ${item.quantity}</p>
+            <div class="qty-controls">
+              <button class="btn-qty-minus" data-id="${item.id}">-</button>
+              <span>${item.quantity}</span>
+              <button class="btn-qty-plus" data-id="${item.id}">+</button>
+              <i class="fa fa-trash remove-cart-item" data-id="${item.id}"></i>
+            </div>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+
+    cartBody.innerHTML += `<div class="cart-total"><strong>Total:</strong> $${total.toFixed(2)}</div>`;
+  }
+
+  function renderWishlist() {
+    let wishlistBody = wishlistContainer.querySelector(".wishlist-body");
+    if (!wishlistBody) {
+      wishlistBody = document.createElement("div");
+      wishlistBody.className = "wishlist-body";
+      wishlistContainer.appendChild(wishlistBody);
+    }
+
+    const wishlist = getStoredData("wishlist");
+    if (wishlist.length === 0) {
+      wishlistBody.innerHTML = `<p class="empty-msg">Your wishlist is empty.</p>`;
+      return;
+    }
+
+    wishlistBody.innerHTML = wishlist
+      .map(
+        (item) => `
+      <div class="wishlist-card" data-id="${item.id}">
+        <img src="${item.img || "https://placehold.co/80x80"}" alt="${item.title}" />
+        <div class="wishlist-data">
+          <p class="wishlist-item-title">${item.title}</p>
+          <p class="wishlist-item-price">$${item.price}</p>
+          <i class="fa fa-trash remove-wishlist-item" data-id="${item.id}"></i>
+        </div>
+      </div>
+    `,
+      )
+      .join("");
+  }
+
+  // ==========================================================================
+  // PRODUCTS API INTEGRATION
   // ==========================================================================
   function fetchProducts() {
     if (productContainer) {
@@ -137,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const url = new URL("https://api.escuelajs.co/api/v1/products");
-
     if (state.title.trim())
       url.searchParams.append("title", state.title.trim());
     if (state.categoryId)
@@ -216,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     productContainer.appendChild(fragment);
   }
 
-  // Fetch initial Categories
+  // Categories API Fetch
   fetch("https://api.escuelajs.co/api/v1/categories")
     .then((res) => {
       if (!res.ok) throw new Error("Can't fetch categories");
@@ -257,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((err) => console.error("Error loading categories:", err));
 
   // ==========================================================================
-  // EVENT LISTENERS & DELEGATION
+  // EVENT DELEGATION (PRODUCTS, CART & WISHLIST ACTIONS)
   // ==========================================================================
   if (filterForm) {
     filterForm.addEventListener("submit", (e) => {
@@ -281,9 +356,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Product Container Clicks (Add to cart & Toggle Wishlist)
   if (productContainer) {
     productContainer.addEventListener("click", (e) => {
-      // WISHLIST TOGGLE
       if (e.target.classList.contains("wishlist")) {
         const productId = e.target.dataset.id;
         let wishlist = getStoredData("wishlist");
@@ -309,23 +384,71 @@ document.addEventListener("DOMContentLoaded", () => {
         setStoredData("wishlist", wishlist);
       }
 
-      // ADD TO CART
       if (e.target.classList.contains("addtocart")) {
-        const cart = getStoredData("cart");
-        const newItem = {
-          id: e.target.dataset.id,
-          title: e.target.dataset.title,
-          price: e.target.dataset.price,
-          img: e.target.dataset.img,
-          quantity: 1,
-        };
+        let cart = getStoredData("cart");
+        const productId = e.target.dataset.id;
+        const existingItem = cart.find(
+          (item) => String(item.id) === String(productId),
+        );
 
-        cart.push(newItem);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id: productId,
+            title: e.target.dataset.title,
+            price: e.target.dataset.price,
+            img: e.target.dataset.img,
+            quantity: 1,
+          });
+        }
+
         setStoredData("cart", cart);
       }
     });
   }
 
-  // Initial products load
+  // Cart Container Delegation (Quantity Controls & Deletion)
+  if (cartContainer) {
+    cartContainer.addEventListener("click", (e) => {
+      let cart = getStoredData("cart");
+      const id = e.target.dataset.id;
+
+      if (e.target.classList.contains("btn-qty-plus")) {
+        const item = cart.find((i) => String(i.id) === String(id));
+        if (item) item.quantity += 1;
+      } else if (e.target.classList.contains("btn-qty-minus")) {
+        const item = cart.find((i) => String(i.id) === String(id));
+        if (item) {
+          item.quantity -= 1;
+          if (item.quantity <= 0) {
+            cart = cart.filter((i) => String(i.id) !== String(id));
+          }
+        }
+      } else if (e.target.classList.contains("remove-cart-item")) {
+        cart = cart.filter((i) => String(i.id) !== String(id));
+      }
+
+      setStoredData("cart", cart);
+      renderCart();
+    });
+  }
+
+  // Wishlist Container Delegation (Removal)
+  if (wishlistContainer) {
+    wishlistContainer.addEventListener("click", (e) => {
+      if (e.target.classList.contains("remove-wishlist-item")) {
+        const id = e.target.dataset.id;
+        let wishlist = getStoredData("wishlist");
+        wishlist = wishlist.filter((i) => String(i.id) !== String(id));
+
+        setStoredData("wishlist", wishlist);
+        renderWishlist();
+        fetchProducts(); // Refresh heart icons on grid
+      }
+    });
+  }
+
+  // Initial load
   fetchProducts();
 });
