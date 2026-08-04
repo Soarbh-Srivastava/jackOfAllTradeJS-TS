@@ -161,10 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <p class="cart-item-price">$${item.price} x ${item.quantity}</p>
             <div class="qty-controls">
               <button class="btn-qty-minus" data-id="${item.id}">-</button>
+              <div>
               <span>${item.quantity}</span>
               <button class="btn-qty-plus" data-id="${item.id}">+</button>
-              <i class="fa fa-trash remove-cart-item" data-id="${item.id}"></i>
+              </div>
+              <div>
+                <button type="button" class="remove-cart-item" data-id="${item.id}" aria-label="Remove item">🗑</button>
+              </div>
+               
             </div>
+            
           </div>
         </div>
       `;
@@ -194,9 +200,13 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="wishlist-card" data-id="${item.id}">
         <img src="${item.img || "https://placehold.co/80x80"}" alt="${item.title}" />
         <div class="wishlist-data">
+        <div>
           <p class="wishlist-item-title">${item.title}</p>
           <p class="wishlist-item-price">$${item.price}</p>
-          <i class="fa fa-trash remove-wishlist-item " data-id="${item.id}"></i>
+          </div>
+          <div>
+            <button type="button" class="remove-wishlist-item" data-id="${item.id}" aria-label="Remove item">🗑</button>
+          </div>
         </div>
       </div>
     `,
