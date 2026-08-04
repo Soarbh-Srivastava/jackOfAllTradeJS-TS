@@ -293,8 +293,30 @@ hr {
   right: 0;
   top: 0;
   height: 100vh;
-  background-color: #fff;
+  background-color: #f7f6f6;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+  align-items: center;
+  font-weight: bold;
+}
+
+.cart-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+.cart-card img {
+  width: 20%;
+  height: 20%;
+  object-fit: cover;
+  padding: 1rem;
 }
 
 .cart-container.open {
@@ -303,20 +325,32 @@ hr {
   width: 30%;
 }
 
-/* Ensure the drawer hides by default and shows when .open is added */
 .wishlist-container {
   position: fixed;
-  right: -100%; /* Hidden off screen */
+  right: -100%;
   top: 0;
   width: 300px;
   height: 100vh;
   transition: right 0.3s ease;
   background: #fff;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
 }
 
 .wishlist-container.open {
-  right: 0; /* Slide in when active */
+  right: 0;
+}
+
+.qty-controls {
+  display: flex;
+  gap: 4rem;
+}
+.cart-total {
+  display: flex;
+  align-items: center;
+  margin-top: 6rem;
+  justify-content: center;
 }
 /* ==========================================================================
    DESKTOP MEDIA QUERY ENHANCEMENTS (Screens wider than 768px)

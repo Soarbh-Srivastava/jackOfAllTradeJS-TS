@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="wishlist-data">
           <p class="wishlist-item-title">${item.title}</p>
           <p class="wishlist-item-price">$${item.price}</p>
-          <i class="fa fa-trash remove-wishlist-item" data-id="${item.id}"></i>
+          <i class="fa fa-trash remove-wishlist-item " data-id="${item.id}"></i>
         </div>
       </div>
     `,
