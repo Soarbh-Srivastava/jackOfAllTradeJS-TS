@@ -57,11 +57,13 @@ hr {
 }
 
 .search-box {
+  display: flex;
   border-radius: 4rem;
   padding: 0.5rem 1rem;
   background-color: #f0f0f0;
   width: 100%;
-  max-width: 400px;
+  height: 2rem;
+  max-width: 500px;
 }
 
 .search-inp-container {
@@ -77,6 +79,7 @@ hr {
   background-color: #f0f0f0;
   width: 100%;
   font-family: "Google Sans", sans-serif;
+  align-items: center;
 }
 
 .nav-icons {
@@ -281,6 +284,14 @@ hr {
   display: flex;
   padding: 1rem;
   justify-content: space-between;
+  align-items: center;
+}
+
+.prdt-action .wishlist,
+.prdt-action .addtocart {
+  font-size: 1.1rem;
+  color: #111;
+  cursor: pointer;
 }
 
 .cart-container,
@@ -378,7 +389,8 @@ hr {
   flex-shrink: 0;
 }
 
-.qty-controls button {
+.btn-qty-plus,
+.btn-qty-minus {
   border: none;
   background: #111;
   color: #fff;
@@ -391,13 +403,13 @@ hr {
   cursor: pointer;
   padding: 0;
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   line-height: 1;
 }
 
 .remove-cart-item,
 .remove-wishlist-item {
-  border: 1px solid #d9534f;
+  border: none;
   background: #fff5f5;
   color: #d9534f;
   width: auto;
@@ -409,7 +421,7 @@ hr {
   justify-content: center;
   cursor: pointer;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 2rem;
   line-height: 1;
   text-decoration: none;
 }
@@ -433,8 +445,15 @@ hr {
   display: flex;
   align-items: center;
   margin-top: 6rem;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 1rem;
 }
+.buyBtn {
+  background-color: black;
+  color: white;
+  padding: 1rem 3rem;
+}
+
 /* ==========================================================================
    DESKTOP MEDIA QUERY ENHANCEMENTS (Screens wider than 768px)
    ========================================================================== */

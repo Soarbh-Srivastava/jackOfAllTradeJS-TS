@@ -1,7 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ==========================================================================
-  // DOM ELEMENTS & GLOBAL STATE
-  // ==========================================================================
   const menuToggle = document.querySelector(".menu-toggle");
   const navLinks = document.querySelector(".nav-links");
 
@@ -177,7 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .join("");
 
-    cartBody.innerHTML += `<div class="cart-total"><strong>Total:</strong> $${total.toFixed(2)}</div>`;
+    cartBody.innerHTML += `<div class="cart-total"><div><strong>Total:</strong> $${total.toFixed(2)}
+    </div><div><button class="buyBtn">Buy</button></div></div>`;
   }
 
   function renderWishlist() {
@@ -256,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const wishlist = getStoredData("wishlist");
+    const cart = getStoredData("cart");
     const fragment = document.createDocumentFragment();
 
     products.forEach((product) => {
@@ -270,6 +269,11 @@ document.addEventListener("DOMContentLoaded", () => {
         (item) => String(item.id) === String(product.id),
       );
       const heartClass = isWishlisted ? "fa-heart" : "fa-heart-o";
+
+      const isInCart = cart.some(
+        (item) => String(item.id) === String(product.id),
+      );
+      const cartIconClass = isInCart ? "fa-plus-square" : "fa-plus-square-o";
 
       card.innerHTML = `
         <div class="product-img-container">
@@ -286,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
              data-price="${product.price}" 
              data-img="${imgUrl}" 
              aria-hidden="true"></i>
-          <i class="fa fa-plus addtocart" 
+          <i class="fa ${cartIconClass} addtocart" 
              data-id="${product.id}" 
              data-title="${product.title}" 
              data-price="${product.price}" 
@@ -417,6 +421,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         setStoredData("cart", cart);
+
+        e.target.classList.remove("fa-plus-square-o", "fa-plus-square");
+        e.target.classList.add(
+          cart.some((item) => String(item.id) === String(productId))
+            ? "fa-plus-square"
+            : "fa-plus-square-o",
+        );
+
         if (cartContainer && cartContainer.classList.contains("open")) {
           renderCart();
         }
