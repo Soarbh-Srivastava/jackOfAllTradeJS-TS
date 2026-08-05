@@ -440,6 +440,22 @@ hr {
   box-sizing: border-box;
 }
 
+.cross-action-btn {
+  border: none;
+  background: #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.cross-action-btn:disabled {
+  background: #c8c8c8;
+  cursor: not-allowed;
+}
+
 .cart-total,
 .wishlist-total {
   display: flex;

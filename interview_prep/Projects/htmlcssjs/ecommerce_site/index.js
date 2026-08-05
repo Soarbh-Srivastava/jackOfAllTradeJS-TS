@@ -140,6 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const cart = getStoredData("cart");
+    const wishlist = getStoredData("wishlist");
     if (cart.length === 0) {
       cartBody.innerHTML = `<p class="empty-msg">Your cart is empty.</p>`;
       return;
@@ -149,6 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
     cartBody.innerHTML = cart
       .map((item) => {
         const itemTotal = Number(item.price) * item.quantity;
+        const isWishlisted = wishlist.some(
+          (wishItem) => String(wishItem.id) === String(item.id),
+        );
         total += itemTotal;
         return `
         <div class="cart-card" data-id="${item.id}">
@@ -162,11 +166,23 @@ document.addEventListener("DOMContentLoaded", () => {
               <span>${item.quantity}</span>
               <button class="btn-qty-plus" data-id="${item.id}">+</button>
               </div>
+              
               <div>
                 <button type="button" class="remove-cart-item" data-id="${item.id}" aria-label="Remove item">🗑</button>
               </div>
                
             </div>
+            <button
+              type="button"
+              class="cross-action-btn add-cart-item-to-wishlist"
+              data-id="${item.id}"
+              data-title="${item.title}"
+              data-price="${item.price}"
+              data-img="${item.img || ""}"
+              ${isWishlisted ? "disabled" : ""}
+            >
+              ${isWishlisted ? "Wishlisted" : "Add to Wishlist"}
+            </button>
             
           </div>
         </div>
@@ -187,28 +203,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const wishlist = getStoredData("wishlist");
+    const cart = getStoredData("cart");
     if (wishlist.length === 0) {
       wishlistBody.innerHTML = `<p class="empty-msg">Your wishlist is empty.</p>`;
       return;
     }
 
     wishlistBody.innerHTML = wishlist
-      .map(
-        (item) => `
+      .map((item) => {
+        const isInCart = cart.some(
+          (cartItem) => String(cartItem.id) === String(item.id),
+        );
+        return `
       <div class="wishlist-card" data-id="${item.id}">
         <img src="${item.img || "https://placehold.co/80x80"}" alt="${item.title}" />
         <div class="wishlist-data">
         <div>
           <p class="wishlist-item-title">${item.title}</p>
           <p class="wishlist-item-price">$${item.price}</p>
+          <button
+            type="button"
+            class="cross-action-btn add-wishlist-item-to-cart"
+            data-id="${item.id}"
+            data-title="${item.title}"
+            data-price="${item.price}"
+            data-img="${item.img || ""}"
+          >
+            ${isInCart ? "Add One More to Cart" : "Add to Cart"}
+          </button>
           </div>
           <div>
             <button type="button" class="remove-wishlist-item" data-id="${item.id}" aria-label="Remove item">🗑</button>
           </div>
         </div>
       </div>
-    `,
-      )
+    `;
+      })
       .join("");
   }
 
@@ -399,6 +429,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (wishlistContainer && wishlistContainer.classList.contains("open")) {
           renderWishlist();
         }
+        if (cartContainer && cartContainer.classList.contains("open")) {
+          renderCart();
+        }
       }
 
       if (e.target.classList.contains("addtocart")) {
@@ -432,6 +465,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cartContainer && cartContainer.classList.contains("open")) {
           renderCart();
         }
+        if (wishlistContainer && wishlistContainer.classList.contains("open")) {
+          renderWishlist();
+        }
       }
     });
   }
@@ -440,11 +476,31 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cartContainer) {
     cartContainer.addEventListener("click", (e) => {
       let cart = getStoredData("cart");
+      let wishlist = getStoredData("wishlist");
       const id = e.target.dataset.id;
+      let cartUpdated = false;
+      let wishlistUpdated = false;
 
-      if (e.target.classList.contains("btn-qty-plus")) {
+      if (e.target.classList.contains("add-cart-item-to-wishlist")) {
+        const existingWishlistItem = wishlist.find(
+          (i) => String(i.id) === String(id),
+        );
+
+        if (!existingWishlistItem) {
+          wishlist.push({
+            id,
+            title: e.target.dataset.title,
+            price: e.target.dataset.price,
+            img: e.target.dataset.img,
+          });
+          wishlistUpdated = true;
+        }
+      } else if (e.target.classList.contains("btn-qty-plus")) {
         const item = cart.find((i) => String(i.id) === String(id));
-        if (item) item.quantity += 1;
+        if (item) {
+          item.quantity += 1;
+          cartUpdated = true;
+        }
       } else if (e.target.classList.contains("btn-qty-minus")) {
         const item = cart.find((i) => String(i.id) === String(id));
         if (item) {
@@ -452,28 +508,78 @@ document.addEventListener("DOMContentLoaded", () => {
           if (item.quantity <= 0) {
             cart = cart.filter((i) => String(i.id) !== String(id));
           }
+          cartUpdated = true;
         }
       } else if (e.target.classList.contains("remove-cart-item")) {
         cart = cart.filter((i) => String(i.id) !== String(id));
+        cartUpdated = true;
       }
 
-      setStoredData("cart", cart);
+      if (!cartUpdated && !wishlistUpdated) {
+        return;
+      }
+
+      if (cartUpdated) {
+        setStoredData("cart", cart);
+      }
+      if (wishlistUpdated) {
+        setStoredData("wishlist", wishlist);
+      }
+
       renderCart();
+      if (wishlistContainer && wishlistContainer.classList.contains("open")) {
+        renderWishlist();
+      }
+      fetchProducts();
     });
   }
 
   // Wishlist Container Delegation (Removal)
   if (wishlistContainer) {
     wishlistContainer.addEventListener("click", (e) => {
+      let wishlist = getStoredData("wishlist");
+      let cart = getStoredData("cart");
+      let wishlistUpdated = false;
+      let cartUpdated = false;
+
       if (e.target.classList.contains("remove-wishlist-item")) {
         const id = e.target.dataset.id;
-        let wishlist = getStoredData("wishlist");
         wishlist = wishlist.filter((i) => String(i.id) !== String(id));
+        wishlistUpdated = true;
+      } else if (e.target.classList.contains("add-wishlist-item-to-cart")) {
+        const id = e.target.dataset.id;
+        const existingItem = cart.find((i) => String(i.id) === String(id));
 
-        setStoredData("wishlist", wishlist);
-        renderWishlist();
-        fetchProducts(); // Refresh heart icons on grid
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            id,
+            title: e.target.dataset.title,
+            price: e.target.dataset.price,
+            img: e.target.dataset.img,
+            quantity: 1,
+          });
+        }
+        cartUpdated = true;
       }
+
+      if (!wishlistUpdated && !cartUpdated) {
+        return;
+      }
+
+      if (wishlistUpdated) {
+        setStoredData("wishlist", wishlist);
+      }
+      if (cartUpdated) {
+        setStoredData("cart", cart);
+      }
+
+      renderWishlist();
+      if (cartContainer && cartContainer.classList.contains("open")) {
+        renderCart();
+      }
+      fetchProducts(); // Refresh cart/wishlist icons on grid
     });
   }
 
