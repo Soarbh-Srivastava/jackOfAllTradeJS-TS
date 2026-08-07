@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Welcome from "./components/welcome";
 import ReuseableComponent from "./components/ReuseableComponent";
+import Wapper from "./components/Wapper";
 
 createRoot(document.getElementById("root")).render(
   <>
@@ -14,6 +15,9 @@ createRoot(document.getElementById("root")).render(
     >
       <p>This is a resuable component</p>
       <b>It can have children</b>
+      <Wapper>
+        <>this is warpper</>
+      </Wapper>
     </ReuseableComponent>
   </>,
 );
