@@ -8,11 +8,13 @@ import DashBoard from "./components/propDrill/DashBoard";
 import Component1 from "./components/composition/Component1";
 import Component2 from "./components/composition/Component2";
 import Component3 from "./components/composition/Component3";
+import { Parent } from "./components/ChildernToParent";
 
 function App() {
   const [user, setUser] = useState("soarbh");
   return (
     <>
+      <Parent />
       <DashBoard user="this is prop drill" />
       {/* {this is solution of prop drill} */}
       <Component1>
