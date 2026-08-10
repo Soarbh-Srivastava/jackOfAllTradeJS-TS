@@ -12,21 +12,29 @@ import { useContext } from "react";
 //   );
 // };
 
-const ThemeContext = React.createContext();
-const App = () => {
-  const [theme, setTheme] = useState("light");
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <MainContain></MainContain>
-    </ThemeContext.Provider>
-  );
-};
+// =================================
+// ========== gloabl State =========
+// =================================
 
-const MainContain = () => {
-  const { theme } = useContext(ThemeContext);
-  return (
-    <>
-      <p>{theme}</p>
-    </>
-  );
-};
+// const ThemeContext = React.createContext();
+// const App = () => {
+//   const [theme, setTheme] = useState("light");
+//   return (
+//     <ThemeContext.Provider value={{ theme, setTheme }}>
+//       <MainContain></MainContain>
+//     </ThemeContext.Provider>
+//   );
+// };
+
+// const MainContain = () => {
+//   const { theme } = useContext(ThemeContext);
+//   return (
+//     <>
+//       <p>{theme}</p>
+//     </>
+//   );
+// };
+
+// =================================
+// ========== Drived State =========
+// =================================
