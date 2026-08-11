@@ -40,3 +40,54 @@
 // };
 
 // createRoot(document.getElementById("root")).render(<App />);
+
+//learned useRef
+
+// import { useRef, useState } from "react";
+// import { createRoot } from "react-dom/client";
+
+// const App = () => {
+//   const [second, setSecond] = useState(0);
+//   const timeRef = useRef(null);
+//   const startIme = () => {
+//     if (timeRef.current !== null) return;
+//     timeRef.current = setInterval(() => {
+//       setSecond((prev) => prev + 1);
+//     }, 1000);
+//   };
+//   const stopTime = () => {
+//     clearInterval(timeRef.current);
+//     timeRef.current = null;
+//   };
+//   return (
+//     <>
+//       <p>{second}</p>
+//       <button onClick={startIme}>start</button>
+//       <button onClick={stopTime}>Rest</button>
+//     </>
+//   );
+// };
+
+// createRoot(document.getElementById("root")).render(<App />);
+
+// ========================
+// ========useMemo========
+// ========================
+
+import { Component, useMemo, useState } from "react";
+import { createRoot } from "react-dom/client";
+
+const App = () => {
+  const [user, setUser] = useState(...MassiveArray);
+  const [searchQuery, setSearchQuery] = useState("");
+  let FilterQuery = useMemo(
+    () => user.filter((u) => u.contains(searchQuery)),
+    [user, searchQuery],
+  );
+  return;
+  <>
+    <Component>{FilterQuery}</Component>
+  </>;
+};
+
+createRoot(document.getElementById("root")).render(<App />);
