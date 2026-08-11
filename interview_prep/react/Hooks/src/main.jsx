@@ -116,34 +116,55 @@
 // ======useContext=====
 // ========================
 
-import { createContext, useContext, useState } from "react";
+// import { createContext, useContext, useState } from "react";
+// import { createRoot } from "react-dom/client";
+
+// const ThemeContext = createContext(null);
+
+// const App = () => {
+//   const [theme, setTheme] = useState("Light");
+//   return (
+//     <>
+//       <ThemeContext.Provider value={{ theme, setTheme }}>
+//         <NavBar />
+//       </ThemeContext.Provider>
+//     </>
+//   );
+// };
+
+// const NavBar = () => {
+//   const { theme, setTheme } = useContext(ThemeContext);
+//   const chageThemeHandler = () => {
+//     if (theme == "light") setTheme("dark");
+//     else setTheme("light");
+//   };
+//   return (
+//     <>
+//       <h1>{theme}</h1>
+//       <button onClick={chageThemeHandler}>change theme</button>
+//     </>
+//   );
+// };
+
+// createRoot(document.getElementById("root")).render(<App />);
+
+// ========================
+// =======useReduce========
+// ========================
+
+import { useReducer } from "react";
 import { createRoot } from "react-dom/client";
 
-const ThemeContext = createContext(null);
-
 const App = () => {
-  const [theme, setTheme] = useState("Light");
-  return (
-    <>
-      <ThemeContext.Provider value={{ theme, setTheme }}>
-        <NavBar />
-      </ThemeContext.Provider>
-    </>
-  );
+  let intialState = { count: 0 };
+  const reducer =(state,action)=>{
+    switch(state.type){
+      case "Increment":
+    }
+  }
+  const [state,dispatch] = useReducer(reducer,intialState);
+  return(
+    
+  )
 };
-
-const NavBar = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
-  const chageThemeHandler = () => {
-    if (theme == "light") setTheme("dark");
-    else setTheme("light");
-  };
-  return (
-    <>
-      <h1>{theme}</h1>
-      <button onClick={chageThemeHandler}>change theme</button>
-    </>
-  );
-};
-
 createRoot(document.getElementById("root")).render(<App />);
