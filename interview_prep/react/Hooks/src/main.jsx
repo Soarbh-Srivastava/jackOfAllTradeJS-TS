@@ -74,20 +74,40 @@
 // ========useMemo========
 // ========================
 
-import { Component, useMemo, useState } from "react";
+// import { Component, useMemo, useState } from "react";
+// import { createRoot } from "react-dom/client";
+
+// const App = () => {
+//   const [user, setUser] = useState(...MassiveArray);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   let FilterQuery = useMemo(
+//     () => user.filter((u) => u.contains(searchQuery)),
+//     [user, searchQuery],
+//   );
+//   return;
+//   <>
+//     <Component>{FilterQuery}</Component>
+//   </>;
+// };
+
+// createRoot(document.getElementById("root")).render(<App />);
+
+// ========================
+// ======useCallback=====
+// ========================
+
+import { useCallback, useState } from "react";
 import { createRoot } from "react-dom/client";
 
 const App = () => {
-  const [user, setUser] = useState(...MassiveArray);
-  const [searchQuery, setSearchQuery] = useState("");
-  let FilterQuery = useMemo(
-    () => user.filter((u) => u.contains(searchQuery)),
-    [user, searchQuery],
+  const [count, setCount] = useState(0);
+  const handleCnt = useCallback(() => setCount(count + 1), [count]);
+  return (
+    <>
+      <p>{count}</p>
+      <button onClick={handleCnt}>+</button>
+    </>
   );
-  return;
-  <>
-    <Component>{FilterQuery}</Component>
-  </>;
 };
 
 createRoot(document.getElementById("root")).render(<App />);
