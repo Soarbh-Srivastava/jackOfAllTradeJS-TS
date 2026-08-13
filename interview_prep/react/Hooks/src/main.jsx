@@ -151,20 +151,46 @@
 // ========================
 // =======useReduce========
 // ========================
+/*import { useReducer } from "react";
+import { createRoot } from "react-dom/client";
 
-import { useReducer } from "react";
+let intialState = { count: 0 };
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "Increment":
+      return { count: state.count + 1 };
+    case "Decrement":
+      return { count: state.count - 1 };
+
+    case "ADD_5":
+      return { count: state.count + action.payload };
+    default:
+      return state;
+  }
+};
+
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, intialState);
+  return (
+    <>
+      <p>{state.count}</p>
+      <button onClick={() => dispatch({ type: "Increment" })}>Increment</button>
+      <button onClick={() => dispatch({ type: "Decrement" })}>Decrement</button>
+      <button onClick={() => dispatch({ type: "ADD_5", payload: 5 })}>
+        Add 5
+      </button>
+    </>
+  );
+};
+
+createRoot(document.getElementById("root")).render(<App />);
+*/
+
 import { createRoot } from "react-dom/client";
 
 const App = () => {
-  let intialState = { count: 0 };
-  const reducer =(state,action)=>{
-    switch(state.type){
-      case "Increment":
-    }
-  }
-  const [state,dispatch] = useReducer(reducer,intialState);
-  return(
-    
-  )
+  const url = "";
+  const data = useFetch(url);
 };
+
 createRoot(document.getElementById("root")).render(<App />);
