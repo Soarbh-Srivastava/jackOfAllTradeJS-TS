@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 
 // export const ReactHookForm = () => {
 //   const {
@@ -30,37 +30,74 @@ import { useForm } from "react-hook-form";
 //   );
 // };
 
+// export const ReactHookForm = () => {
+//   const { register, handleSubmit } = useForm({
+//     defaultValues: {
+//       fName: "",
+//       lName: "",
+//       category: "",
+//       checbox: [],
+//       radio: "",
+//     },
+//   });
+//   return (
+//     <form onSubmit={handleSubmit((data) => console.log(data))}>
+//       <input
+//         {...register("fName", { required: true })}
+//         placeholder="First Name"
+//       />
+//       <input {...register("lName", { minLength: 5 })} placeholder="Last Name" />
+//       <select {...register("category")}>
+//         <option value=""></option>
+//         <option value="a"> option A</option>
+//         <option value="b">option B</option>
+//       </select>
+//       <input {...register("checbox")} type="checkbox" />
+//       <input {...register("checbox")} type="checkbox" />
+//       <input {...register("checkbox")} type="checkbox" />
+
+//       <input {...register("radio")} type="radio" value="A" />
+//       <input {...register("radio")} type="radio" value="B"></input>
+//       <input {...register("radio")} type="radio" value="C" />
+
+//       <input type="submit" />
+//     </form>
+//   );
+// };
+
+import { FormState, useForm } from "react-hook-form";
+
 export const ReactHookForm = () => {
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
     defaultValues: {
-      fName: "",
-      lName: "",
-      category: "",
-      checbox: [],
-      radio: "",
+      email: "",
+      password: "",
     },
   });
+  const onSubmit = async (data) => {
+    await new Promise((resolve) => setTimeout(() => resolve, 1000));
+    console.log(data);
+  };
   return (
-    <form onSubmit={handleSubmit(console.log)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <input
-        {...register("fName", { required: true })}
-        placeholder="First Name"
+        {...register("email", {
+          required: "Invalid email",
+          pattern: /^[a-z0-9._&+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+        })}
       />
-      <input {...register("lName", { minLength: 5 })} placeholder="Last Name" />
-      <select {...register("category")}>
-        <option value=""></option>
-        <option value="a"> option A</option>
-        <option value="b">option B</option>
-      </select>
-      <input {...register("checbox")} type="checkbox" />
-      <input {...register("checbox")} type="checkbox" />
-      <input {...register("checkbox")} type="checkbox" />
-
-      <input {...register("radio")} type="radio" value="A" />
-      <input {...register("radio")} type="radio" value="B"></input>
-      <input {...register("radio")} type="radio" value="C" />
-
-      <input type="submit" />
+      {errors.email && <div>{errors.email?.message}</div>}
+      <input
+        {...register("password", { required: "Min length 8", minLength: 8 })}
+      />
+      {errors.password && <div>{errors.password?.message}</div>}
+      <button type="submit">
+        {isSubmitting ? "Submitting..." : "Submit"}{" "}
+      </button>
     </form>
   );
 };
