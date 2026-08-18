@@ -1,11 +1,14 @@
-const initialState = {
+export const initialState = {
   count: 0,
   draftCount: 0,
 };
 
-// Improvement: Define a proper Action type instead of using 'any'.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const counterReducer = (state = initialState, action: any) => {
+type actionType = {
+  type: string;
+  payload: unknown;
+};
+
+export const counterReducer = (state = initialState, action: actionType) => {
   console.log({ action });
   const { count, draftCount } = state;
 

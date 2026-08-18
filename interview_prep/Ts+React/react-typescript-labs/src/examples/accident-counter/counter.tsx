@@ -1,6 +1,7 @@
 import { Card } from '$/common/components/card';
-import React, { useState, type FormEvent } from 'react';
+import React, { useReducer, useState, type FormEvent } from 'react';
 import { Button } from './button';
+import { counterReducer, initialState } from './counter-reducer';
 
 type CounterControllerProps = {
   setCount: React.Dispatch<React.SetStateAction<number>>;
@@ -44,6 +45,7 @@ const FormController = ({ draftCount, setCount, setDraftCount }: FormControllerP
 export const Counter = () => {
   const [count, setCount] = useState<number>(0);
   const [draftCount, setDraftCount] = useState<number>(0);
+  const [state, dispatch] = useReducer(counterReducer, initialState);
   return (
     <Card className="border-primary-500 flex w-2/3 flex-col items-center gap-8">
       <h1>Days Since the Last Accident</h1>
