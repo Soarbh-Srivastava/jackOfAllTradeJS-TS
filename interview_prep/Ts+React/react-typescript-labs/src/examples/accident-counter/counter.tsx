@@ -1,35 +1,29 @@
 import { Card } from '$/common/components/card';
-import React, { useReducer, useState, type FormEvent } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Button } from './button';
 import { counterReducer, initialState, type CounterAction } from './counter-reducer';
 
 type CounterControllerProps = {
-  setCount: React.Dispatch<React.SetStateAction<number>>;
+  dispatch: React.Dispatch<CounterAction>;
 };
 
-type FormControllerProps = CounterControllerProps & {
+type FormControllerProps = {
   draftCount: number;
   setDraftCount: React.Dispatch<React.SetStateAction<number>>;
+  dispatch: React.Dispatch<CounterAction>;
 };
 
-const CounterController = ({ setCount }: CounterControllerProps): React.ReactNode => {
+const CounterController = ({ dispatch }: CounterControllerProps): React.ReactNode => {
   return (
     <div className="flex gap-2">
-      <Button onClick={() => setCount((prev) => prev - 1)}>➖ Decrement</Button>
-      <Button onClick={() => setCount(0)}>🔁 Reset</Button>
-      <Button onClick={() => setCount((prev) => prev + 1)}>➕ Increment</Button>
+      <Button onClick={() => dispatch({ type: 'decrement' })}>➖ Decrement</Button>
+      <Button onClick={() => dispatch({ type: 'reset' })}>🔁 Reset</Button>
+      <Button onClick={() => dispatch({ type: 'increment' })}>➕ Increment</Button>
     </div>
   );
 };
 
-const FormController = ({
-  draftCount,
-  setCount,
-  setDraftCount,
-  dispatch,
-}: FormControllerProps & {
-  dispatch: React.Dispatch<CounterAction>;
-}) => {
+const FormController = ({ draftCount, setDraftCount, dispatch }: FormControllerProps) => {
   return (
     <form
       className="flex items-center gap-2"
@@ -50,15 +44,14 @@ const FormController = ({
 };
 
 export const Counter = () => {
-  // const [count, setCount] = useState<number>(0);
-  // const [draftCount, setDraftCount] = useState<number>(0);
   const [state, dispatch] = useReducer(counterReducer, initialState);
+  const [draftCount, setDraftCount] = useState<number>(state.count);
   return (
     <Card className="border-primary-500 flex w-2/3 flex-col items-center gap-8">
       <h1>Days Since the Last Accident</h1>
-      <p className="text-6xl">{count}</p>
-      <CounterController setCount={setCount} />
-      <FormController draftCount={draftCount} setCount={setCount} setDraftCount={setDraftCount} />
+      <p className="text-6xl">{state.count}</p>
+      <CounterController dispatch={dispatch} />
+      <FormController draftCount={draftCount} setDraftCount={setDraftCount} dispatch={dispatch} />
     </Card>
   );
 };

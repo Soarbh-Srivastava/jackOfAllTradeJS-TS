@@ -10,56 +10,56 @@ It's intentionally a collection of different things rather than a single project
 
 ### 💻 JavaScript & TypeScript
 
-* JavaScript fundamentals and revision
-* TypeScript
-* Modern JavaScript concepts
-* Problem solving and coding exercises
+- JavaScript fundamentals and revision
+- TypeScript
+- Modern JavaScript concepts
+- Problem solving and coding exercises
 
 ### ⚛️ React & Frontend
 
-* React fundamentals
-* Component-based development
-* Hooks
-* State management
-* Frontend experiments
-* Building UI while learning
+- React fundamentals
+- Component-based development
+- Hooks
+- State management
+- Frontend experiments
+- Building UI while learning
 
 ### 🟢 MERN Stack
 
-* MongoDB
-* Express.js
-* React
-* Node.js
-* REST APIs
-* Authentication
-* Backend experiments
+- MongoDB
+- Express.js
+- React
+- Node.js
+- REST APIs
+- Authentication
+- Backend experiments
 
 ### 🤖 AI & Automation
 
-* AI engineering experiments
-* AI-powered automation
-* APIs and integrations
-* Exploring how AI can be used to build real-world applications
+- AI engineering experiments
+- AI-powered automation
+- APIs and integrations
+- Exploring how AI can be used to build real-world applications
 
 ### 🧠 Data Structures & Algorithms
 
-* DSA practice
-* Problem-solving patterns
-* Interview preparation
-* Algorithm implementations
+- DSA practice
+- Problem-solving patterns
+- Interview preparation
+- Algorithm implementations
 
 ### ▲ Next.js
 
-* Next.js fundamentals
-* App experiments
-* Learning modern full-stack React development
+- Next.js fundamentals
+- App experiments
+- Learning modern full-stack React development
 
 ### 🛠️ Developer Tools
 
-* Git & GitHub
-* Neovim
-* Development workflows
-* Other tools and technologies I'm exploring
+- Git & GitHub
+- Neovim
+- Development workflows
+- Other tools and technologies I'm exploring
 
 ## 📂 Repository Structure
 
