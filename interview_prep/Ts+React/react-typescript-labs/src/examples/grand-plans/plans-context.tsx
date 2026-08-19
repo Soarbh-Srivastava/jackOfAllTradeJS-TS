@@ -1,6 +1,8 @@
-import { createContext, useState, type PropsWithChildren } from 'react';
+import React, { createContext, useState, type PropsWithChildren } from 'react';
 import * as Api from './api';
 import type { Plan } from './types';
+import { validators } from 'tailwind-merge';
+import type { StreamOptions } from 'stream';
 
 type PlansContextType = {
   plans: Plan[];
@@ -9,7 +11,27 @@ type PlansContextType = {
   removePlan: (id: number) => Promise<void>;
 };
 
-const PlansContext = createContext<PlansContextType | undefined>(undefined);
+const PlansContext = createContext<PlansContextType | null>(null as unknown as PlansContextType);
+/*
+export function dummyFunction(value: string | null) {
+  if (value === null) throw new Error('This value is definatly a null');
+  console.log(value);
+  return null;
+}
+*/
+//NOTE : when we are using context it can blow up if we pass something wrong and it will be difficult to debug too. so use a wrapper on createContext so that it can throw error and immedialty know where there is the error
+
+export const creatBetterContext = <T,>() => {
+  const Context = createContext<T | null>(null);
+  const useConext = () => {
+    const ctx = React.useContext(Context);
+    if (ctx === null) {
+      throw new Error('Context was not set. Woops');
+    }
+    return ctx;
+  };
+  return [useConext, Context.Provider] as const;
+};
 
 export const PlansProvider = ({ children }: PropsWithChildren) => {
   const [plans, setPlans] = useState<Plan[]>([]);
