@@ -1,7 +1,7 @@
 import { Card } from '$/common/components/card';
 import React, { useReducer, useState, type FormEvent } from 'react';
 import { Button } from './button';
-import { counterReducer, initialState } from './counter-reducer';
+import { counterReducer, initialState, type CounterAction } from './counter-reducer';
 
 type CounterControllerProps = {
   setCount: React.Dispatch<React.SetStateAction<number>>;
@@ -22,13 +22,20 @@ const CounterController = ({ setCount }: CounterControllerProps): React.ReactNod
   );
 };
 
-const FormController = ({ draftCount, setCount, setDraftCount }: FormControllerProps) => {
+const FormController = ({
+  draftCount,
+  setCount,
+  setDraftCount,
+  dispatch,
+}: FormControllerProps & {
+  dispatch: React.Dispatch<CounterAction>;
+}) => {
   return (
     <form
       className="flex items-center gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        setCount(draftCount);
+        dispatch({ type: 'set-count', payload: draftCount });
       }}
     >
       <input
@@ -43,8 +50,8 @@ const FormController = ({ draftCount, setCount, setDraftCount }: FormControllerP
 };
 
 export const Counter = () => {
-  const [count, setCount] = useState<number>(0);
-  const [draftCount, setDraftCount] = useState<number>(0);
+  // const [count, setCount] = useState<number>(0);
+  // const [draftCount, setDraftCount] = useState<number>(0);
   const [state, dispatch] = useReducer(counterReducer, initialState);
   return (
     <Card className="border-primary-500 flex w-2/3 flex-col items-center gap-8">

@@ -1,16 +1,30 @@
 export const initialState = {
   count: 0,
-  draftCount: 0,
 };
 
-type actionType = {
+type ActionType = {
   type: string;
   payload: unknown;
 };
 
-export const counterReducer = (state = initialState, action: actionType) => {
+interface IncrementAction extends ActionType {
+  type: 'increment';
+  payload: never;
+}
+interface DecrementAction extends ActionType {
+  type: 'decrement';
+  payload: never;
+}
+interface SetCountAction extends ActionType {
+  type: 'set-count';
+  payload: number;
+}
+
+export type CounterAction = IncrementAction | DecrementAction | SetCountAction;
+
+export const counterReducer = (state = initialState, action: CounterAction) => {
   console.log({ action });
-  const { count, draftCount } = state;
+  const { count } = state;
 
   if (action.type === 'increment') {
     const newCount = count + 1;
@@ -18,21 +32,12 @@ export const counterReducer = (state = initialState, action: actionType) => {
   }
 
   if (action.type === 'decrement') {
-    const newCount = count - 1;
+    const newCount = count - action.payload;
     return { count: newCount, draftCount: newCount };
   }
-
-  if (action.type === 'reset') {
-    return { count: 0, draftCount: 0 };
-  }
-
-  if (action.type === 'updateDraftCount') {
-    console.log('updateDraftCount');
-    return { count, draftCount: action.payload };
-  }
-
-  if (action.type === 'updateCountFromDraft') {
-    return { count: Number(draftCount), draftCount };
+  if (action.type === 'set-count') {
+    const newCount = action.payload;
+    return { count: newCount };
   }
 
   return state;

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { Card } from '$/common/components/card';
 import { useEffect, useState } from 'react';
 import { currentDate } from './utilities';
-import type { Post } from './types';
+// import type { Post } from './types';
 
 type NewsArticleProps = {
   id: number;
@@ -12,7 +12,7 @@ const postSchema = z.object({
   id: z.number(),
   title: z.string(),
   body: z.string(),
-}) ;
+});
 
 type Post = z.infer<typeof postSchema>;
 
