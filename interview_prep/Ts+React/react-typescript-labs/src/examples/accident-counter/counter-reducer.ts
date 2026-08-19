@@ -1,43 +1,53 @@
-export const initialState = {
+export type CounterState = {
+  count: number;
+};
+
+export const initialState: CounterState = {
   count: 0,
 };
 
 type ActionType = {
   type: string;
-  payload: unknown;
+  payload?: unknown;
 };
 
 interface IncrementAction extends ActionType {
   type: 'increment';
-  payload: never;
+  payload?: never;
 }
 interface DecrementAction extends ActionType {
   type: 'decrement';
-  payload: never;
+  payload?: never;
+}
+interface ResetAction extends ActionType {
+  type: 'reset';
+  payload?: never;
 }
 interface SetCountAction extends ActionType {
   type: 'set-count';
   payload: number;
 }
 
-export type CounterAction = IncrementAction | DecrementAction | SetCountAction;
+export type CounterAction = IncrementAction | DecrementAction | ResetAction | SetCountAction;
 
-export const counterReducer = (state = initialState, action: CounterAction) => {
+export const counterReducer = (state: CounterState, action: CounterAction): CounterState => {
   console.log({ action });
   const { count } = state;
 
   if (action.type === 'increment') {
-    const newCount = count + 1;
-    return { count: newCount, draftCount: newCount };
+    return { count: count + 1 };
   }
 
   if (action.type === 'decrement') {
-    const newCount = count - action.payload;
-    return { count: newCount, draftCount: newCount };
+    return { count: count - 1 };
   }
+
+  if (action.type === 'reset') {
+    return initialState;
+  }
+
   if (action.type === 'set-count') {
-    const newCount = action.payload;
-    return { count: newCount };
+    return { count: action.payload };
   }
 
   return state;
