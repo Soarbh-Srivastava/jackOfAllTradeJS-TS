@@ -2,7 +2,7 @@
   const { title = 'Card Title', description = '' } = $props();
 </script>
 
-<div>
-  <h2>{title}</h2>
-  <p>{description}</p>
+<div class="border p-8 bg-slate-100">
+  <h2 class= "text-xl font-semibold">{title}</h2>
+  <p class="mt-1">{description}</p>
 </div>
