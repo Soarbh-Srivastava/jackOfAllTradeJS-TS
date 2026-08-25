@@ -4,9 +4,10 @@
   const errorId = error ? `${id}-error` : undefined;
 </script>
 
-<div>
-  <label for={id}>{label}</label>
-  <input
+
+<div >
+  <label class="block font-medium" for={id}>{label}</label>
+  <input class="block border rounded-md px-1 py-1.5 focused:outline-blue-500  "
     {id}
     aria-describedby={descriptionId}
     aria-invalid={!!error}
