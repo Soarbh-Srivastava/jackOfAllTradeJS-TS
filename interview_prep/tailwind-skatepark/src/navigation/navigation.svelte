@@ -4,9 +4,10 @@
   </li>
 {/snippet}
 
-<nav>
-  <a href="/">Unicorn Corp</a>
-  <ul>
+<nav class="flex">
+  <a class="flex-1 font-bold" href="/">Unicorn Corp</a>
+
+  <ul class="flex gap-2">
     {@render link('Home')}
     {@render link('About')}
     {@render link('Services')}
