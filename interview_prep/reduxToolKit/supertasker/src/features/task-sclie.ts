@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { aC } from 'vitest/dist/types-f302dae9';
+import CreateTask from '../components/create-task';
 
 export type Task = {
   id: string;
@@ -10,6 +11,11 @@ export type TaskState = {
   entities: Task[];
 };
 
+type DraftState = RequiredOnly<Task, 'title'>;
+
+const CreateTasks = (draftTask: DraftState): Task => {
+  return { ...draftTask, id: nanoid() };
+};
 const initialState: TaskState = {
   entities: [],
 };
