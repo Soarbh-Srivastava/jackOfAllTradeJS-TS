@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "paths": {
+      "*": ["node_modules/*"],
+      "./*": ["./*"],
+      "./*.html": ["./*"],
+      "./*.html?raw": ["./*"]
+    }
+  },
+  "include": ["examples/**/*.js", "examples/**/*.svelte"],
+  "exclude": ["node_modules", "dist"]
+}
