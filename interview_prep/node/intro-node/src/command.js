@@ -7,6 +7,7 @@ import {
   removeNote,
   removeAllNotes,
 } from "./notes.js";
+import { startServer } from "./server.js";
 const listNotes = (notes) => {
   notes.forEach(({ id, content, tags }) => {
     console.log(`ID: ${id}`);
@@ -30,18 +31,6 @@ yargs(hideBin(process.argv))
       const tags = argv.tags ? argv.tags.split(",") : [];
       const note = await newNote(argv.note, tags);
       console.log(`Created new note: ${note}`);
-    },
-  )
-  .command(
-    "find <id>",
-    "Find a note by ID",
-    (yargs) =>
-      yargs.positional("id", {
-        describe: "The ID of the note to find",
-        type: "string",
-      }),
-    (argv) => {
-      console.log(`Finding note: ${argv.id}`);
     },
   )
   .command(
@@ -83,8 +72,9 @@ yargs(hideBin(process.argv))
         type: "number",
         default: 3000,
       }),
-    (argv) => {
-      console.log(`Starting web interface on port ${argv.port}`);
+    async (argv) => {
+      const notes = await getAllNotes();
+      startServer(notes, argv.port);
     },
   )
   .command("all", "List all notes", {}, async () => {
