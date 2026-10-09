@@ -1,5 +1,20 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import {
+  getAllNotes,
+  newNote,
+  findNotes,
+  removeNote,
+  removeAllNotes,
+} from "./notes.js";
+const listNotes = (notes) => {
+  notes.forEach(({ id, content, tags }) => {
+    console.log(`ID: ${id}`);
+    console.log(`Content: ${content}`);
+    console.log(`Tags: ${tags.join(", ")}`);
+    console.log("------------ \n");
+  });
+};
 
 yargs(hideBin(process.argv))
   .command(
@@ -11,10 +26,10 @@ yargs(hideBin(process.argv))
         type: "string",
       });
     },
-    (argv) => {
-      console.log(
-        `Creating a new note: ${argv.note}${argv.tag ? ` [${argv.tag}]` : ""}`,
-      );
+    async (argv) => {
+      const tags = argv.tags ? argv.tags.split(",") : [];
+      const note = await newNote(argv.note, tags);
+      console.log(`Created new note: ${note}`);
     },
   )
   .command(
@@ -30,19 +45,34 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
+    "find <filter>",
+    "Find notes by filter",
+    (yargs) => {
+      return yargs.positional("filter", {
+        describe: "The filter to search for",
+        type: "string",
+      });
+    },
+    async (argv) => {
+      const matches = await findNotes(argv.filter);
+      listNotes(matches);
+    },
+  )
+  .command(
     "remove <id>",
     "Remove a note by ID",
     (yargs) =>
       yargs.positional("id", {
         describe: "The ID of the note to remove",
-        type: "string",
+        type: "number",
       }),
-    (argv) => {
-      console.log(`Removing note: ${argv.id}`);
+    async (argv) => {
+      await removeNote(argv.id);
+      console.log(`Removed note: ${argv.id}`);
     },
   )
-  .command("clean", "Remove all notes", {}, () => {
-    console.log("Cleaning all notes");
+  .command("clean", "Remove all notes", {}, async () => {
+    await removeAllNotes();
   })
   .command(
     "web [port]",
@@ -57,13 +87,10 @@ yargs(hideBin(process.argv))
       console.log(`Starting web interface on port ${argv.port}`);
     },
   )
-  .command("all", "List all notes", {}, () => {
+  .command("all", "List all notes", {}, async () => {
     console.log("Listing all notes");
+    const notes = await getAllNotes();
+    console.log(`Listing all notes: ${notes.length}`);
+    listNotes(notes);
   })
-  .option("tag", {
-    alias: "t",
-    type: "string",
-    description: "Add a tag to the note",
-  })
-  .demandCommand(1)
-  .parse();
+  .parseAsync();

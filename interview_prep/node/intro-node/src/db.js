@@ -7,7 +7,7 @@ export const getDB = async () => {
 };
 
 export const saveDB = async (db) => {
-  const db = fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
+  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
 };
 
 export const insertDB = async (note) => {
