@@ -14,7 +14,7 @@ const formatNotes = (notes) => {
   <div class="note">
     <h2>${note.content}</h2>
     <div class="tags">
-      ${note.tags.map((tag) => `<span class="tag">${tag}</span>`).join("\n")}
+     ${note.tags.map((tag) => `<span class="tag">tags :${tag}</span>`).join("\n")}
     </div>
   </div>
   `;
