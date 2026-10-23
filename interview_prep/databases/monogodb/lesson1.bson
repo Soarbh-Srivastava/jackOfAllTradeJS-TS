@@ -1,0 +1,11 @@
+to change a database use this
+
+** data base is collection of the database object
+
+use SomeDBName 
+
+** collection  is a grp of document. it is broadky comparble to the SQL, but document within a collection can have diffrent feilds
+
+db.createCollection("users")
+
+** a document is an individual record containing feild-value pairs. Its can contain nested objects, arrays and strigs , number data and the other bson type
