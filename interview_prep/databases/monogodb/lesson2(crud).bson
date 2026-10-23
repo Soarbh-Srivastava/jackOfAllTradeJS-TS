@@ -1,0 +1,9 @@
+insertOne -> insert
+insertMany -> mutiple insert statement
+find -> select
+findOne -> select limit 1
+updateOne -> update with matching condition
+updateMany -> update many with a matchinh condtion
+replaceOne -> conceptuall replace a record from the content
+deleteOne ->  Delete with a matching condtion
+deleteMany -> Delete with a matching condtion
